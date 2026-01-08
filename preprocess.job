@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=thin_course
 #SBATCH --time 1:30:00
-#SBATCH --output=$HOME/exp/job_%j.out
-#SBATCH --error=$HOME/exp/job_%j.err
+#SBATCH --output=exp/job_%j.out
+#SBATCH --error=/exp/job_%j.err
 
 module load 2025
 module load Python/3.13.1-GCCcore-14.2.0
