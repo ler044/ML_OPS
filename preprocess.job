@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=thin_course
 #SBATCH --time 1:30:00
-#SBATCH --output=array_%A_%a.out
-#SBATCH --error=array_%A_%a.err
+#SBATCH --output=~/exp/job_%j.out
+#SBATCH --error=~/exp/job_%j.err
 
 module load 2025
 module load Python/3.13.1-GCCcore-14.2.0
@@ -18,4 +18,4 @@ source my_venv/bin/activate
 
 python $HOME/exp/batch_test.py OUTPUT_DIR
 
-scp -r OUTPUT_DIR $HOME/preprocessed_data
+scp -r OUTPUT_DIR $HOME/exp
