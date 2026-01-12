@@ -31,13 +31,10 @@ class PCAMDataset(Dataset):
         self.images = self.x_h5["x"]
         self.labels = self.y_h5["y"] 
 
-        means = self.images.mean(axis=(1, 2, 3))
-        self.indices = np.where((means != 0) & (means != 255))[0].tolist()
-        
     def __len__(self) -> int:
         # TODO: Return length of dataset
         # The dataloader will know hence how many batches to create
-        return len(self.indices)
+        return len(self.images)
 
     def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
         # TODO: Implement data retrieval
@@ -45,11 +42,10 @@ class PCAMDataset(Dataset):
         # 2. Convert to uint8 (for PIL compatibility if using transforms)
         # 3. Apply transforms if they exist
         # 4. Return tensor image and label (as long)
-        real_idx = self.indices[idx]
+        img_np = self.images[idx]
+        label = int(self.labels[idx])
 
-        img_np = self.images[real_idx]
-        label = int(self.labels[real_idx])
-
+        # Ensure numerical stability before uint8 cast
         if img_np.dtype != np.uint8:
             img_np = np.clip(img_np, 0, 255).astype(np.uint8)
 
@@ -58,4 +54,5 @@ class PCAMDataset(Dataset):
         if self.transform is not None:
             img = self.transform(img)
 
-        return img, torch.tensor(label, dtype=torch.long)
+        label_tensor = torch.tensor(label, dtype=torch.long)
+        return img, label_tensor
