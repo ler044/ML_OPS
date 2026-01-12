@@ -42,19 +42,16 @@ class PCAMDataset(Dataset):
         # 2. Convert to uint8 (for PIL compatibility if using transforms)
         # 3. Apply transforms if they exist
         # 4. Return tensor image and label (as long)
-        img_np = self.images[idx]  
-        label = int(self.labels[idx]) 
+        img_np = self.images[idx]
+        label = int(self.labels[idx])
 
-        # Convert image to uint8 (if not already)
         if img_np.dtype != np.uint8:
-            img_np = (img_np * 255).astype(np.uint8)
+            img_np = np.clip(img_np, 0, 255).astype(np.uint8)
 
+        img = torch.from_numpy(img_np)
 
-        # Apply transforms if provided
         if self.transform is not None:
             img = self.transform(img)
 
-        # Convert label to tensor
         label_tensor = torch.tensor(label, dtype=torch.long)
-
         return img, label_tensor
