@@ -51,7 +51,7 @@ class TestPCAMPipeline:
         # Expected 98 because index 1 (mean 0) and 2 (mean 255) should be dropped
         assert (
             len(ds.images) == 98
-        ), f"Filtering failed. Expected 98 samples, got {len(ds.indices)}"
+        ), f"Filtering failed. Expected 98 samples, got {len(ds.images)}"
 
     def test_dataloader_output_logic(self, mock_data_dir):
         """Verifies shapes, types, and label squeezing."""
