@@ -42,15 +42,13 @@ class PCAMDataset(Dataset):
         # 2. Convert to uint8 (for PIL compatibility if using transforms)
         # 3. Apply transforms if they exist
         # 4. Return tensor image and label (as long)
-        img_np = self.images[idx]  # numpy array
-        label = int(self.labels[idx])  # scalar
+        img_np = self.images[idx]  
+        label = int(self.labels[idx]) 
 
         # Convert image to uint8 (if not already)
         if img_np.dtype != np.uint8:
             img_np = (img_np * 255).astype(np.uint8)
 
-        # Convert to PIL Image
-        img = Image.fromarray(img_np)
 
         # Apply transforms if provided
         if self.transform is not None:
