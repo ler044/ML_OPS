@@ -2,9 +2,9 @@ name: MLOps Pipeline
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, proto]
   pull_request:
-    branches: [main, dev]
+    branches: [main, proto]
 
 jobs:
   quality-check:
