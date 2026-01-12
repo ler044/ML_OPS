@@ -28,15 +28,12 @@ class PCAMDataset(Dataset):
         self.x_h5 = h5py.File(self.x_path, "r")
         self.y_h5 = h5py.File(self.y_path, "r")
 
-        # Read into temporary NumPy arrays
         images_np = self.x_h5["x"][:]
         labels_np = self.y_h5["y"][:]
 
-        # Filter out all-black or all-white images
         means = images_np.mean(axis=(1, 2, 3))
         mask = (means > 0) & (means < 255)
 
-        # Assign to dataset attributes
         self.images = images_np[mask]
         self.labels = labels_np[mask]
 
@@ -52,17 +49,16 @@ class PCAMDataset(Dataset):
         # 2. Convert to uint8 (for PIL compatibility if using transforms)
         # 3. Apply transforms if they exist
         # 4. Return tensor image and label (as long)
-        img_np = self.images[idx]
-        label = int(self.labels[idx])
+        image = self.images[idx]
+        label = self.labels[idx]
 
-        # Ensure numerical stability before uint8 cast
-        if img_np.dtype != np.uint8:
-            img_np = np.clip(img_np, 0, 255).astype(np.uint8)
+        image = image.clip(0, 255)
+        image = torch.from_numpy(image).float() / 255.0
 
-        img = torch.from_numpy(img_np)
-
+        image = image.permute(2,0,1)
         if self.transform is not None:
-            img = self.transform(img)
+            image = self.transform(image)
 
-        label_tensor = torch.tensor(label, dtype=torch.long)
-        return img, label_tensor
+        label = np.squeeze(label)
+        label_tensor = torch.tensor(label).long()
+        return image, label_tensor

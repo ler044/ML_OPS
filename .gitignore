@@ -6,3 +6,4 @@ experiments/results/
 .DS_Store
 *.egg-info/
 venv/
+src/ml_core/data/pcam_data.tar
