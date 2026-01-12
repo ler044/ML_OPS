@@ -28,11 +28,18 @@ class PCAMDataset(Dataset):
         self.x_h5 = h5py.File(self.x_path, "r")
         self.y_h5 = h5py.File(self.y_path, "r")
 
-        means = self.images[:].mean(axis=(1, 2, 3))
-        mask = (means > 0) & (means < 255)  # keep only non-extreme images
+        # Read into temporary NumPy arrays
+        images_np = self.x_h5["x"][:]
+        labels_np = self.y_h5["y"][:]
 
-        self.images = self.images[:][mask]
-        self.labels = self.labels[:][mask]
+        # Filter out all-black or all-white images
+        means = images_np.mean(axis=(1, 2, 3))
+        mask = (means > 0) & (means < 255)
+
+        # Assign to dataset attributes
+        self.images = images_np[mask]
+        self.labels = labels_np[mask]
+
 
     def __len__(self) -> int:
         # TODO: Return length of dataset
