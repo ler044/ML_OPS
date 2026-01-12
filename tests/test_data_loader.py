@@ -50,7 +50,7 @@ class TestPCAMPipeline:
         ds = PCAMDataset(x_p, y_p)
         # Expected 98 because index 1 (mean 0) and 2 (mean 255) should be dropped
         assert (
-            len(ds.indices) == 98
+            len(ds.images) == 98
         ), f"Filtering failed. Expected 98 samples, got {len(ds.indices)}"
 
     def test_dataloader_output_logic(self, mock_data_dir):
