@@ -16,7 +16,7 @@ class PCAMDataset(Dataset):
         self.x_path = Path(x_path)
         self.y_path = Path(y_path)
         self.transform = transform
-        self.indices = np.where((self.images.mean(axis=(1, 2, 3)) != 0) & (self.images.mean(axis=(1, 2, 3)) != 255))[0].tolist()
+
         # TODO: Initialize dataset
         # 1. Check if files exist
         if not self.x_path.is_file():
@@ -31,6 +31,9 @@ class PCAMDataset(Dataset):
         self.images = self.x_h5["x"]
         self.labels = self.y_h5["y"] 
 
+        means = self.images.mean(axis=(1, 2, 3))
+        self.indices = np.where((means != 0) & (means != 255))[0].tolist()
+        
     def __len__(self) -> int:
         # TODO: Return length of dataset
         # The dataloader will know hence how many batches to create
