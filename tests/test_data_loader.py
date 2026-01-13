@@ -37,7 +37,7 @@ class TestPCAMPipeline:
         """Checks if 1e5 values are clipped to 255 before becoming uint8."""
         x_p = str(mock_data_dir / "camelyonpatch_level_2_split_train_x.h5")
         y_p = str(mock_data_dir / "camelyonpatch_level_2_split_train_y.h5")
-        ds = PCAMDataset(x_p, y_p, filter_data=False)
+        ds = PCAMDataset(x_p, y_p)
         img, _ = ds[0]
         assert (
             img.max() <= 255
@@ -47,11 +47,11 @@ class TestPCAMPipeline:
         """Checks if mean-based filtering drops the black/white outlier samples."""
         x_p = str(mock_data_dir / "camelyonpatch_level_2_split_train_x.h5")
         y_p = str(mock_data_dir / "camelyonpatch_level_2_split_train_y.h5")
-        ds = PCAMDataset(x_p, y_p, filter_data=True)
+        ds = PCAMDataset(x_p, y_p)
         # Expected 98 because index 1 (mean 0) and 2 (mean 255) should be dropped
         assert (
-            len(ds.indices) == 98
-        ), f"Filtering failed. Expected 98 samples, got {len(ds.indices)}"
+            len(ds.images) == 98
+        ), f"Filtering failed. Expected 98 samples, got {len(ds.images)}"
 
     def test_dataloader_output_logic(self, mock_data_dir):
         """Verifies shapes, types, and label squeezing."""
