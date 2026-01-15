@@ -5,8 +5,8 @@
 #SBATCH --gpus-per-task=1
 #SBATCH --partition=thin_course
 #SBATCH --time=01:00:00
-#SBATCH --output=array_%A_%a.out
-#SBATCH --error=array_%A_%a.err
+#SBATCH --output=job_%j.out
+#SBATCH --error=job_%j.err
 
 # Load environment modules
 module load 2025
