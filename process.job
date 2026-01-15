@@ -1,0 +1,27 @@
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=2
+#SBATCH --gpus-per-task=1
+#SBATCH --partition=thin_course
+#SBATCH --time=01:00:00
+#SBATCH --output=array_%A_%a.out
+#SBATCH --error=array_%A_%a.err
+
+# Load environment modules
+module load 2025
+module load Python/3.13.1-GCCcore-14.2.0
+module load matplotlib/3.10.3-gfbf-2025a
+
+# Set output directory
+OUTPUT_DIR="/scratch-shared/${USER}/data"
+mkdir -p "$OUTPUT_DIR"
+
+# Activate virtual environment
+source "$HOME/my_venv/bin/activate"
+
+# Execute program
+python "$HOME/experiments/train.py" "$OUTPUT_DIR"
+
+# Copy the output data to home directory
+cp -r "$OUTPUT_DIR" "$HOME/preprocessed_data"
