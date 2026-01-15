@@ -3,10 +3,11 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --gpus-per-task=1
-#SBATCH --partition=thin_course
+#SBATCH --partition=gpu_course
 #SBATCH --time=01:00:00
 #SBATCH --output=job_%j.out
 #SBATCH --error=job_%j.err
+#SBATCH --mem 16G
 
 # Load environment modules
 module load 2025
